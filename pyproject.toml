@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "obd-logger"
+version = "0.1.0"
+description = "A simple OBD logger that writes to InfluxDB"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+influxdb-client = "^1.20.0"
+python-dotenv = "^0.19.0"
+python-obd = "^0.8.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
