@@ -56,7 +56,7 @@ def get_gps_data(last_print):
     return None, last_print
 
 def main():
-    # connection = obd.OBD()
+    connection = obd.OBD()
     client = InfluxDBClient(
         url=INFLUXDB_URL,
         token=INFLUXDB_TOKEN,
@@ -68,7 +68,7 @@ def main():
 
     try:
         while True:
-            # data = get_obd_data(connection)
+            data = get_obd_data(connection)
             data = {}
             gps_data, last_print = get_gps_data(last_print)
             if gps_data:
@@ -93,7 +93,7 @@ def main():
     finally:
         write_api.__del__()
         client.__del__()
-        # connection.close()
+        connection.close()
 
 if __name__ == "__main__":
     main()
