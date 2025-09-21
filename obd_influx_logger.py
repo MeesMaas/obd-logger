@@ -43,20 +43,19 @@ def get_obd_data(connection):
             data[key] = response.value.magnitude
     return data
 
-def get_gps_data():
+def get_gps_data(last_print):
     gps.update()
     current = time.monotonic()
     if current - last_print >= POLL_INTERVAL:
         last_print = current
         if not gps.has_fix:
             print("Waiting for fix...")
-            
-            # Bundle GPS point: latitude, longitude, altitude (if available)
-            latitude = gps.latitude
-            longitude = gps.longitude
-            altitude = gps.altitude_m if gps.altitude_m is not None else float('nan')
-            return (latitude, longitude, altitude)
 
+        latitude = gps.latitude
+        longitude = gps.longitude
+        altitude = gps.altitude_m if gps.altitude_m is not None else float('nan')
+        return (latitude, longitude, altitude), last_print
+    return None, last_print
 
 def main():
     # connection = obd.OBD()
@@ -71,7 +70,7 @@ def main():
         while True:
             # data = get_obd_data(connection)
             data = {}
-            gps_data = get_gps_data()
+            gps_data, last_print = get_gps_data(last_print)
             if gps_data:
                 latitude, longitude, altitude = gps_data
                 data.update({
