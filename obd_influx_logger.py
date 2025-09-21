@@ -24,7 +24,7 @@ OBD_COMMANDS = {
 POLL_INTERVAL = float(os.getenv("POLL_INTERVAL", 1.0))  # seconds
 
 # Setup serial interface for GPS module
-uart = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=10)
+uart = serial.Serial("/dev/ttyUSB1", baudrate=9600, timeout=10)
 
 # Create a GPS module instance
 gps = adafruit_gps.GPS(uart, debug=False)
@@ -69,7 +69,6 @@ def main():
     try:
         while True:
             data = get_obd_data(connection)
-            data = {}
             gps_data, last_print = get_gps_data(last_print)
             if gps_data:
                 latitude, longitude, altitude = gps_data
