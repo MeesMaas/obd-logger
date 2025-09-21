@@ -33,6 +33,8 @@ gps = adafruit_gps.GPS(uart, debug=False)
 gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
 gps.send_command(b"PMTK220,1000")
 
+last_print = time.monotonic()
+
 def get_obd_data(connection):
     data = {}
     for key, cmd in OBD_COMMANDS.items():
@@ -44,7 +46,7 @@ def get_obd_data(connection):
 def get_gps_data():
     gps.update()
     current = time.monotonic()
-    if current - last_print >= 1.0:
+    if current - last_print >= POLL_INTERVAL:
         last_print = current
         if not gps.has_fix:
             print("Waiting for fix...")
