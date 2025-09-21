@@ -33,8 +33,6 @@ gps = adafruit_gps.GPS(uart, debug=False)
 gps.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
 gps.send_command(b"PMTK220,1000")
 
-last_print = time.monotonic()
-
 def get_obd_data(connection):
     data = {}
     for key, cmd in OBD_COMMANDS.items():
@@ -65,6 +63,8 @@ def main():
         org=INFLUXDB_ORG
     )
     write_api = client.write_api(write_options=WriteOptions(batch_size=1))
+
+    last_print = time.monotonic()
 
     try:
         while True:
