@@ -52,7 +52,8 @@ def get_gps_data(last_print):
         latitude = gps.latitude
         longitude = gps.longitude
         altitude = gps.altitude_m if gps.altitude_m is not None else float('nan')
-        return (latitude, longitude, altitude), last_print
+        heading = gps.track_angle_deg
+        return (latitude, longitude, altitude, heading), last_print
     return None, last_print
 
 def main():
@@ -71,11 +72,12 @@ def main():
             data = get_obd_data(connection)
             gps_data, last_print = get_gps_data(last_print)
             if gps_data:
-                latitude, longitude, altitude = gps_data
+                latitude, longitude, altitude, heading = gps_data
                 data.update({
                     "latitude": latitude,
                     "longitude": longitude,
-                    "altitude": altitude
+                    "altitude": altitude,
+                    "heading": heading
                 })
 
             if data:
